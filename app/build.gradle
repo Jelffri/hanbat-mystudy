@@ -1,0 +1,52 @@
+plugins {
+    id "java"
+    id 'org.springframework.boot' version '3.5.4'
+}
+
+//SpringBoot의 버전에 맞춰 의존 라이브러리의 버전을 관리하는 플러그인
+apply plugin: 'io.spring.dependency-management'
+
+repositories {
+    mavenCentral() //
+}
+
+dependencies {
+    testImplementation "org.junit.jupiter:junit-jupiter:5.12.1"
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher"
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+jar {
+    archiveFileName = "myapp.jar"
+}
+
+tasks.named("test") {
+    useJUnitPlatform()
+}
+
+tasks.named('bootRun') { // run --> bootRun
+    standardInput = System.in
+}
+
+tasks.withType(JavaExec).configureEach {
+    systemProperty "sun.stdout.encoding", "UTF-8"
+    systemProperty "sun.stderr.encoding", "UTF-8"
+}
+// jar {
+//     archiveBaseName.set("my-custom-name")   // 기본 이름
+//     archiveVersion.set("1.0.0")             // 버전 (원하는 경우)                 ___ 세부설정
+//     archiveClassifier.set("")               // 부가 정보 (없애고 싶으면 빈 문자열) 
+//     archiveExtension.set("jar")             // 확장자 (.jar)     
+// }
